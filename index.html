@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emissão de Nota Fiscal</title>
+    <style>
+        .notaFiscal {
+            margin-top: 20px;
+            display: none;
+        }
+       
+    </style>
+</head>
+<body>
+
+    <!-- Exibição dos dados de entrada -->
+    <h1>Emissão de Nota Fiscal de Serviço (NFS-e)</h1>
+    <div class="dados">
+      Valor R$: <br/>
+      <input type="number" step="0.01" id="valor"/> <br /><br />
+      Itens Vendidos: <br/>
+      <input type="text" id="itens" /> <br /><br />
+      Porcentagem do Imposto (IRPF) %: <br/>
+      <input type="number" id="IRPF"/> <br /><br />
+      Porcentagem do Imposto (PIS) %: <br/>
+      <input type="number" id="PIS"/> <br /><br />
+      Porcentagem do Imposto (COFINS) %: <br/>
+      <input type="number" id="COFINS"/> <br /><br />
+      Porcentagem do Imposto (INSS) %: <br/>
+      <input type="number" id="INSS"/> <br /><br />
+      Porcentagem do Imposto (ISSQN) %: <br/>
+      <input type="number" id="ISSQN"/> <br /><br />
+      <button onclick="emitirNota()">Emitir Nota</button>
+    </div>
+
+    <!-- Exibição dos dados já calculados -->
+    <div class="notaFiscal">
+        <h2>Nota Fiscal de Serviços Eletrônica - NF-e</h2>
+        <p><strong>Data da Emissão:</strong> <span id="nota_data"></span></p>
+        <p><strong>Valor:</strong> <span id="nota_valor"></span></p>
+        <p><strong>Itens Vendidos:</strong> <span id="nota_itens"></span></p>
+        <p><strong>Impostos:</strong> <span id="nota_impostos"></span></p>
+        <p><strong>IRPF:</strong> <span id="nota_irpf"></span></p>
+        <p><strong>PIS:</strong> <span id="nota_pis"></span></p>
+        <p><strong>COFINS:</strong> <span id="nota_cofins"></span></p>
+        <p><strong>INSS:</strong> <span id="nota_inss"></span></p>
+        <p><strong>ISSQN:</strong> <span id="nota_issqn"></span></p>
+        <p><strong>Valor Total:</strong> <span id="nota_vlrtotal"></span></p>
+    </div>
+
+    <!-- Calculo de exibição dos impostos calculados -->
+    <script>
+        function emitirNota() {
+
+            //Valor recebido da div dados
+            var valor = parseFloat(document.getElementById('valor').value);
+            var irpf = parseFloat(document.getElementById('IRPF').value);
+            var pis = parseFloat(document.getElementById('PIS').value);
+            var cofins = parseFloat(document.getElementById('COFINS').value);
+            var inss = parseFloat(document.getElementById('INSS').value);
+            var issqn = parseFloat(document.getElementById('ISSQN').value);
+            var itens = document.getElementById('itens').value;
+
+           //Calculo do imposto
+            var valor_irpf = valor * (irpf / 100);
+            var valor_pis = valor * (pis / 100);
+            var valor_cofins = valor * (cofins / 100);
+            var valor_inss = valor * (inss / 100);
+            var valor_issqn = valor * (issqn / 100);
+
+            var total_impostos = valor_irpf + valor_pis + valor_cofins + valor_inss + valor_issqn;
+            var valor_total = valor + total_impostos;
+
+            //Formatação dos dados que serão exibidos
+            document.getElementById('nota_data').innerHTML = dataAtual();
+            document.getElementById('nota_valor').innerHTML = valor.toLocaleString('pt-br', {minimumFractionDigits: 2});
+            document.getElementById('nota_itens').innerHTML = itens;
+            document.getElementById('nota_impostos').innerHTML = total_impostos.toLocaleString('pt-br', {minimumFractionDigits: 2});
+            document.getElementById('nota_irpf').innerHTML = valor_irpf.toLocaleString('pt-br', {minimumFractionDigits: 2});
+            document.getElementById('nota_pis').innerHTML = valor_pis.toLocaleString('pt-br', {minimumFractionDigits: 2});
+            document.getElementById('nota_cofins').innerHTML = valor_cofins.toLocaleString('pt-br', {minimumFractionDigits: 2});
+            document.getElementById('nota_inss').innerHTML = valor_inss.toLocaleString('pt-br', {minimumFractionDigits: 2});
+            document.getElementById('nota_issqn').innerHTML = valor_issqn.toLocaleString('pt-br', {minimumFractionDigits: 2});
+            document.getElementById('nota_vlrtotal').innerHTML = valor_total.toLocaleString('pt-br', {minimumFractionDigits: 2});
+        
+            document.querySelector('.notaFiscal').style.display = 'block';
+        }
+
+        //Exibição da data atual
+        function dataAtual(){
+            let data = new Date();
+        return data.getDate() + "/" + (data.getMonth()+1) + "/" + data.getFullYear();
+        }
+    </script>
+  
+</body>
+</html>
